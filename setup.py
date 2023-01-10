@@ -6,5 +6,6 @@ setuptools.setup(
     author="Michel Doré",
     author_email="",
     description="A package to download Dutch parliament debates and subtitles",
-    packages=["tweedekamer"],
+    package_dir={'': 'tweedekamer'},
+    packages=setuptools.find_packages(where='tweedekamer'),
 )

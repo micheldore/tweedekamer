@@ -1,7 +1,7 @@
 import re
 import requests
 from bs4 import BeautifulSoup
-from debate import Debate, DebateType
+from .debate import Debate, DebateType
 
 class Search:
     def __init__(self) -> None:
