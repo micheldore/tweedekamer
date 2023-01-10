@@ -9,12 +9,12 @@ class DebateType(Enum):
     COMMITTEE = "field_debate_type%3A154189"
 
 class Debate:
-    def __init__(self, url: str) -> None:
+    def __init__(self, url):
         self.url = url
         self.soup = self.__getSoup()
         self.title = self.getTitle()
 
-    def __getSoup(self) -> BeautifulSoup:
+    def __getSoup(self):
         if not re.match(r"^https?://", self.url):
             # Throw an error if the URL doesn't start with http or https
             raise ValueError("Invalid URL")
@@ -30,7 +30,7 @@ class Debate:
 
         return soup
 
-    def getTitle(self) -> str:
+    def getTitle(self):
         # Get the title of the video
         title = self.soup.find("title").text
 
@@ -52,7 +52,7 @@ class Debate:
 
         return title
 
-    def getVideoLink(self) -> str:
+    def getVideoLink(self):
         # Find the download link in the HTML
         # The .mp4 link is found in an input where the id starts with "edit-debate-file-options-download-"
         # Then the link is found in the value attribute of that input
@@ -74,7 +74,7 @@ class Debate:
 
         return download_link
 
-    def getSubtitleFilename(self) -> str:
+    def getSubtitleFilename(self):
         # Find the subtitle link in the HTML
         # Find the input tag where the id starts with "edit-debate-file-options-" and the value ends with ".srt"
         subtitle_link = self.soup.find(
@@ -87,7 +87,7 @@ class Debate:
 
         return subtitle_link
 
-    def getSubtitleText(self) -> str:
+    def getSubtitleText(self):
         subtitle = self.getSubtitle()
 
         # Remove the index number from the subtitle
@@ -101,7 +101,7 @@ class Debate:
 
         return subtitle
 
-    def getSubtitle(self, path: str = "") -> str:
+    def getSubtitle(self, path = ""):
         subtitle_link = self.getSubtitleFilename()
 
         # Get the form-build-id from the HTML
