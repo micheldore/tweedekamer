@@ -33,7 +33,7 @@ class Debate:
         return speakers.get("plugins").get("chapterdock").get("chapters", [])
 
     def __getSpeakers(self):
-        speakers = [Speaker(data) for data in self.__getSpeakersFromJSON()]
+        speakers = [Speaker(self, data) for data in self.__getSpeakersFromJSON()]
         return speakers
 
 

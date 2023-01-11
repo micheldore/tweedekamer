@@ -1,8 +1,5 @@
-import math
-
-
 class Speaker:
-    def __init__(self, data):
+    def __init__(self, parent, data):
         self.data = data
         self.name = self.__getName()
         self.short_name = self.__getShortName()
@@ -11,7 +8,9 @@ class Speaker:
         self.start_time = self.__getStartTime()
         self.end_time = self.__getEndTime()
         self.image_url = self.__getImageUrl()
-        self.duration = math.abs(self.end_time - self.start_time)
+        self.duration = abs(self.end_time - self.start_time)
+        self.text = parent.subtitle.getTextFromXtoY(self.start_time, self.end_time)
+        self.subtitle = parent.subtitle.getFromXtoY(self.start_time, self.end_time)
     
     def __getName(self):
         return self.data.get("name", "")
@@ -25,7 +24,7 @@ class Speaker:
         try:
             party = full_function.split(" - ")[0]
         except:
-            raise IndexError("Could not find party in full function description")
+            party = ""
 
         return party
 
@@ -35,7 +34,7 @@ class Speaker:
         try:
             function = full_function.split(" - ")[1]
         except:
-            raise IndexError("Could not find function in full function description")
+            function = ""
 
         return function
     
