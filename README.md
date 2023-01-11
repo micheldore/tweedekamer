@@ -33,6 +33,18 @@ results = Search().getDebates("belasting 2022", limit=1)
 results[0].video.link
 ```
 
+### Retrieving speaker information
+
+For each debate there is a list of speakers
+
+```python
+from tweedekamer import Debate, Search
+
+results = Search().getDebates("belasting 2022", limit=1)
+results[0].speakers[0].name
+results[0].speakers[0].party
+```
+
 ## Features
 
 - Retrieve date and info on debate
