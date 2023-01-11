@@ -1,13 +1,17 @@
 import re
 import requests
 from bs4 import BeautifulSoup
-from .debate import Debate, DebateType
+from .debate import Debate
+from .enums.debate_type import DebateType
+from .enums.sort_direction import SortDirection
+from .enums.sort_type import SortType
+
 
 class Search:
     def __init__(self) -> None:
         self.base_url = "https://debatgemist.tweedekamer.nl"
 
-    def __checkAndGenerateSearchUrl(self, query, start_date, end_date, debate_type) -> str:
+    def __checkAndGenerateSearchUrl(self, query, start_date, end_date, debate_type, sort = SortType.RELEVANCE, sort_direction = SortDirection.DESC, limit = 10) -> str:
         base_url = "https://debatgemist.tweedekamer.nl"
 
         search_url = base_url + "/zoeken?search_api_views_fulltext={}"
@@ -36,6 +40,10 @@ class Search:
 
             search_url = search_url.format(debate_type.value)
 
+        search_url = search_url + "&sort={}&order"
+        search_url = search_url.format(sort.value, sort_direction.value)
+
+        assert limit > 0
         assert search_url != base_url
 
         return search_url
@@ -48,20 +56,28 @@ class Search:
         return soup
 
     # Based on a text query returns a list of debate urls
-    def getDebates(self, query, start_date = "", end_date = "", debate_type = DebateType.ANY):
-        self.__checkAndGenerateSearchUrl(query, start_date, end_date, debate_type) # Check if the dates are valid
-        return [Debate(url) for url in self.getDebateUrls(query, start_date, end_date, debate_type)]
+    def getDebates(self, query, start_date = "", end_date = "", debate_type = DebateType.ANY, sort = SortType.RELEVANCE, sort_direction = SortDirection.DESC, limit = 10):
+        self.__checkAndGenerateSearchUrl(query, start_date, end_date, debate_type, sort, sort_direction, limit)
+        return [Debate(url) for url in self.getDebateUrls(query, start_date, end_date, debate_type, sort, sort_direction, limit)]
 
-    def getDebateUrls(self, query, start_date = None, end_date = None, debate_type = DebateType.ANY):
+    def getDebateUrls(self, query, start_date = None, end_date = None, debate_type = DebateType.ANY, sort = SortType.RELEVANCE, sort_direction = SortDirection.DESC, limit = 10):
         done = False
-        search_url = self.__checkAndGenerateSearchUrl(query, start_date, end_date, debate_type)
+        search_url = self.__checkAndGenerateSearchUrl(query, start_date, end_date, debate_type, sort, sort_direction, limit)
+        debates = []
 
         while not done:
             soup = self.__getSoup(search_url)
 
             # Find all a href tags where the class is "video-thumb"
-            debates = soup.find_all("a", {"class": "video-thumb"})
-            debates = [self.base_url + debate["href"] for debate in debates]
+            temp_debates = soup.find_all("a", {"class": "video-thumb"})
+            temp_debates = [self.base_url + debate["href"] for debate in temp_debates]
+
+            for debate in temp_debates:
+                if len(debates) >= limit:
+                    done = True
+                    break
+
+                debates.append(debate)
 
             # Find the next page link, an a tag with the title "Ga naar volgende pagina"
             next_page = soup.find("a", {"title": "Ga naar volgende pagina"})
