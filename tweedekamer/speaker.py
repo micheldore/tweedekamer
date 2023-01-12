@@ -1,3 +1,5 @@
+from .speach import Speach
+
 class Speaker:
     def __init__(self, parent, data):
         self.data = data
@@ -9,8 +11,7 @@ class Speaker:
         self.end_time = self.__getEndTime()
         self.image_url = self.__getImageUrl()
         self.duration = abs(self.end_time - self.start_time)
-        self.text = parent.subtitle.getTextFromXtoY(self.start_time, self.end_time)
-        self.subtitle = parent.subtitle.getFromXtoY(self.start_time, self.end_time)
+        self.speach = Speach(parent, self)
     
     def __getName(self):
         return self.data.get("name", "")
@@ -38,12 +39,15 @@ class Speaker:
 
         return function
     
+
     def __getStartTime(self):
         start = self.data.get("start", 0)
         start = max(start, 0)
         start = int(start)
 
         return start
+    
+
     
     def __getEndTime(self):
         end = self.data.get("end", 0)

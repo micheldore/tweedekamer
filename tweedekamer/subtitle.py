@@ -1,5 +1,6 @@
 import re
 import requests
+from nltk.tokenize import RegexpTokenizer
 
 class Subtitle:
     def __init__(self, soup, url):
@@ -7,6 +8,7 @@ class Subtitle:
         self.url = url
         self.raw = self.get()
         self.text = self.__getText()
+        self.tokenized = self.__tokenize()
 
     def getFilename(self):
         # Find the subtitle link in the HTML
@@ -17,7 +19,12 @@ class Subtitle:
                 "id": re.compile(r"^edit-debate-file-options-"),
                 "value": re.compile(r".srt$"),
             },
-        )["value"]
+        )
+
+        try:
+            subtitle_link = subtitle_link["value"]
+        except:
+            subtitle_link = ""
 
         return subtitle_link
 
@@ -39,6 +46,13 @@ class Subtitle:
         clean_text = re.sub(r"^\s*$", "", clean_text, flags=re.MULTILINE)
 
         return clean_text
+
+    def __tokenize(self):
+        tokenizer = RegexpTokenizer(r"\w+")
+        tokens = tokenizer.tokenize(self.text.lower())
+
+        return tokens
+
     
     def getTextFromXtoY(self, x, y):
         raw = self.getFromXtoY(x, y)
