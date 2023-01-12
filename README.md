@@ -4,7 +4,7 @@ A pypi package for retrieving Dutch parliamentary debate data.
 
 Using this package you can download Dutch parliament debates and subtitles. It is based on the website <https://debatgemist.tweedekamer.nl>. This package is not affiliated with the Dutch parliament. It is not allowed to use this package for commercial purposes.
 
- This package is still in beta, so expect bugs and missing features.
+ This package is no longer in beta, but you still might expect bugs and missing features as the testing library is not finished.
 
 ## Installation
 
@@ -32,7 +32,7 @@ results[0].subtitle.text
 from tweedekamer import Search
 
 results = Search("belasting 2022", limit=1).result
-results[0].video.link
+results[0].video.url
 ```
 
 ### Retrieving speaker information
