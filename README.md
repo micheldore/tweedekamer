@@ -22,7 +22,7 @@ The package requires Python >=3.7.9
 ```python
 from tweedekamer import Search
 
-results = Search().getDebates("belasting 2022", limit=1)
+results = Search("belasting 2022", limit=1).result
 results[0].subtitle.text
 ```
 
@@ -31,7 +31,7 @@ results[0].subtitle.text
 ```python
 from tweedekamer import Search
 
-results = Search().getDebates("belasting 2022", limit=1)
+results = Search("belasting 2022", limit=1).result
 results[0].video.link
 ```
 
@@ -42,13 +42,24 @@ For each debate there is a list of speakers
 ```python
 from tweedekamer import Search
 
-results = Search().getDebates("belasting 2022", limit=1)
+results = Search("belasting 2022", limit=1).result
 results[0].speakers[0].name
 results[0].speakers[0].party
 
 results[0].speakers[0].speach.text
 results[0].speakers[0].speach.subtitle
 results[0].speakers[0].speach.tokenized
+```
+
+### Export to CSV
+
+Export the results of your query to CSV, separate the data by speaker or keep the entire debate per row
+
+```python
+from tweedekamer import Search
+
+Search("belasting 2022", limit=1).to_csv("entire_debate")
+Search("belasting 2022", limit=1).to_csv("debate_per_speaker", separate_speakers=True)
 ```
 
 ## Features
