@@ -1,4 +1,4 @@
-__version__ = "0.0.4-beta1"
+__version__ = "0.0.7-beta1"
 
 from .debate import Debate
 from .search import Search

@@ -58,7 +58,12 @@ class Search:
     # Based on a text query returns a list of debate urls
     def getDebates(self, query, start_date = "", end_date = "", debate_type = DebateType.ANY, sort = SortType.RELEVANCE, sort_direction = SortDirection.DESC, limit = 10):
         self.__checkAndGenerateSearchUrl(query, start_date, end_date, debate_type, sort, sort_direction, limit)
-        return [Debate(url) for url in self.getDebateUrls(query, start_date, end_date, debate_type, sort, sort_direction, limit)]
+        debate_urls = self.getDebateUrls(query, start_date, end_date, debate_type, sort, sort_direction, limit)
+
+        if debate_urls:
+            return [Debate(url) for url in debate_urls]
+        else:
+            return []
 
     def getDebateUrls(self, query, start_date = None, end_date = None, debate_type = DebateType.ANY, sort = SortType.RELEVANCE, sort_direction = SortDirection.DESC, limit = 10):
         done = False
