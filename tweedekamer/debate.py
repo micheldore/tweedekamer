@@ -52,25 +52,40 @@ class Debate:
         return soup
 
     def __getTitle(self) -> str:
-        # Get the title of the video
-        title = self.__soup.find("title").text
+        title = ""
 
-        # Remove the " | Debat Gemist" part of the title
-        title = title.replace(" | Debat Gemist", "")
+        try:
+            # Get the title of the video
+            title = self.__soup.find("title").text
+
+            # Remove the " | Debat Gemist" part of the title
+            title = title.replace(" | Debat Gemist", "")
+        except:
+            pass
 
         return title
     
     def __getDate(self) -> datetime:
-        # Find the time tag and get the datetime attribute
-        date = self.__soup.find("time").get("datetime", None)
+        date = None
 
-        # String to datetime
-        date = datetime.strptime(date, "%Y-%m-%d")
+        try:
+            # Find the time tag and get the datetime attribute
+            date = self.__soup.find("time").get("datetime", None)
+
+            # String to datetime
+            date = datetime.strptime(date, "%Y-%m-%d")
+        except:
+            pass
 
         return date
 
     def __getReadableDate(self) -> str:
-        # Find the time tag and get the inner text
-        date = self.__soup.find("time").text
+        date = ""
+
+        try:
+            # Find the time tag and get the inner text
+            date = self.__soup.find("time").text
+        except:
+            pass
 
         return date
