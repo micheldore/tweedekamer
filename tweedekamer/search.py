@@ -9,9 +9,12 @@ from .enums.sort_type import SortType
 
 
 class Search:
-    def __init__(self, query, start_date: str = "", end_date: str = "", debate_type = DebateType.ANY, sort = SortType.RELEVANCE, sort_direction = SortDirection.DESC, limit = 10) -> None:
+    def __init__(self, query = "", start_date: str = "", end_date: str = "", debate_type = DebateType.ANY, sort = SortType.RELEVANCE, sort_direction = SortDirection.DESC, limit = 10, urls = []) -> None:
         self.base_url = "https://debatgemist.tweedekamer.nl"
-        self.result = self.__getDebates(query, start_date, end_date, debate_type, sort, sort_direction, limit)
+        if urls and type(urls) == list and len(urls) > 0 and all([type(url) == str for url in urls]):
+            self.result = self.__getDebatesFromUrls(urls)
+        else:
+            self.result = self.__getDebates(query, start_date, end_date, debate_type, sort, sort_direction, limit)
 
     def __checkAndGenerateSearchUrl(self, query, start_date, end_date, debate_type, sort = SortType.RELEVANCE, sort_direction = SortDirection.DESC, limit = 10) -> str:
         base_url = "https://debatgemist.tweedekamer.nl"
@@ -65,6 +68,14 @@ class Search:
             return [Debate(url) for url in debate_urls]
         else:
             return []
+
+    def __getDebatesFromUrls(self, urls):
+        # Check if urls are valid
+        for url in urls:
+            if not re.match(r"^https://debatgemist.tweedekamer.nl/debatten/.*$", url):
+                raise ValueError("Invalid url: {}".format(url))
+
+        return [Debate(url) for url in urls]
         
     
     def to_csv(self, filename, separate_speakers = True, delimiter = ","):

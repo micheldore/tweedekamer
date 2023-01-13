@@ -51,6 +51,18 @@ results[0].speakers[0].speach.subtitle
 results[0].speakers[0].speach.tokenized
 ```
 
+### Retrieve from list of URLs
+
+It's also possible to retrieve data from a list of URLs.
+These URLs can be retrieved from the website <https://debatgemist.tweedekamer.nl>.
+Every URL should be a string in a list and should start with `https://debatgemist.tweedekamer.nl/debatten/`.
+
+```python
+from tweedekamer import Search
+
+Search(urls=["https://debatgemist.tweedekamer.nl/debatten/vreemdelingen-en-asielbeleid-10"]).result
+```
+
 ### Export to CSV
 
 Export the results of your query to CSV, separate the data by speaker or keep the entire debate per row
@@ -71,7 +83,7 @@ Search("belasting 2022", limit=1).to_csv("debate_per_speaker", separate_speakers
 
 ## Run Locally
 
-**Use these instructions if you want to edit the package locally**
+Use these instructions if you want to edit the package locally.
 
 Clone the project
 
