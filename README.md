@@ -1,4 +1,10 @@
 # tweedekamer
+![PyPI - Downloads](https://img.shields.io/pypi/dm/tweedekamer)
+![PyPI - Format](https://img.shields.io/pypi/format/tweedekamer)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/tweedekamer)
+![PyPI - Implementation](https://img.shields.io/pypi/implementation/tweedekamer)
+![GitHub Repo stars](https://img.shields.io/github/stars/micheldore/tweedekamer?style=social)
+![GitHub forks](https://img.shields.io/github/forks/micheldore/tweedekamer?style=social)
 
 A pypi package for retrieving Dutch parliamentary debate data.
 
