@@ -2,6 +2,7 @@ import re
 import requests
 from nltk.tokenize import RegexpTokenizer
 
+
 class Subtitle:
     def __init__(self, soup, url):
         self.soup = soup
@@ -40,7 +41,8 @@ class Subtitle:
         clean_text = re.sub(r"^\d+\s", "", clean_text, flags=re.MULTILINE)
 
         # Remove the timecode from the subtitle
-        clean_text = re.sub(r"^\d\d:\d\d:\d\d,\d\d\d --> \d\d:\d\d:\d\d,\d\d\d\s", "", clean_text, flags=re.MULTILINE)
+        clean_text = re.sub(
+            r"^\d\d:\d\d:\d\d,\d\d\d --> \d\d:\d\d:\d\d,\d\d\d\s", "", clean_text, flags=re.MULTILINE)
 
         # Remove the empty lines
         clean_text = re.sub(r"^\s*$", "", clean_text, flags=re.MULTILINE)
@@ -53,7 +55,6 @@ class Subtitle:
 
         return tokens
 
-    
     def getTextFromXtoY(self, x, y):
         raw = self.getFromXtoY(x, y)
         clean_text = self.cleanSubtitle(raw)
@@ -114,7 +115,6 @@ class Subtitle:
 
         return text
 
-    
     def __timecodeToSeconds(self, timecode):
         # Split the timecode into hours, minutes, seconds and milliseconds
         timecode = timecode.split(":")
@@ -132,7 +132,8 @@ class Subtitle:
         subtitle_link = self.getFilename()
 
         # Get the form-build-id from the HTML
-        form_build_id = self.soup.find("input", {"name": "form_build_id"})["value"]
+        form_build_id = self.soup.find(
+            "input", {"name": "form_build_id"})["value"]
 
         # Create a POST request with the following form-data
         # form_build_id: form_build_id

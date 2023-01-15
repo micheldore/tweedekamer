@@ -1,5 +1,6 @@
 from .speach import Speach
 
+
 class Speaker:
     def __init__(self, parent, data):
         self.data = data
@@ -12,16 +13,16 @@ class Speaker:
         self.image_url = self.__getImageUrl()
         self.duration = abs(self.end_time - self.start_time)
         self.speach = Speach(parent, self)
-    
+
     def __getName(self):
         return self.data.get("name", "")
-    
+
     def __getShortName(self):
         return self.data.get("name_short", "")
 
     def __getParty(self):
         full_function = self.data.get("parliamentary_party", "")
-        
+
         try:
             party = full_function.split(" - ")[0]
         except:
@@ -38,7 +39,6 @@ class Speaker:
             function = ""
 
         return function
-    
 
     def __getStartTime(self):
         start = self.data.get("start", 0)
@@ -46,9 +46,7 @@ class Speaker:
         start = int(start)
 
         return start
-    
 
-    
     def __getEndTime(self):
         end = self.data.get("end", 0)
         end = max(end, 0)
@@ -58,5 +56,3 @@ class Speaker:
 
     def __getImageUrl(self):
         return self.data.get("speaker_image", "")
-
-

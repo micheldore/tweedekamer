@@ -7,6 +7,7 @@ from .video import Video
 from .subtitle import Subtitle
 from .speaker import Speaker
 
+
 class Debate:
     def __init__(self, url) -> None:
         self.url = url
@@ -25,7 +26,7 @@ class Debate:
 
         if speakers_json is None:
             return []
-        
+
         speakers_json = speakers_json["data-setup"]
 
         # Convert the JSON string to a Python dictionary
@@ -33,9 +34,9 @@ class Debate:
         return speakers.get("plugins").get("chapterdock").get("chapters", [])
 
     def __getSpeakers(self):
-        speakers = [Speaker(self, data) for data in self.__getSpeakersFromJSON()]
+        speakers = [Speaker(self, data)
+                    for data in self.__getSpeakersFromJSON()]
         return speakers
-
 
     def __getSoup(self) -> BeautifulSoup:
         if not re.match(r"^https?://", self.url):
@@ -64,7 +65,7 @@ class Debate:
             pass
 
         return title
-    
+
     def __getDate(self) -> datetime:
         date = None
 
