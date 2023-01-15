@@ -150,8 +150,11 @@ class Subtitle:
         r = requests.post(self.url, data=data)
 
         if r.status_code != 200:
-            print("Error requesting URL")
-            exit(1)
+            raise Exception("Error: Could not get the subtitle file")
+
+        # Check if the file type contains text/srt
+        if "text/srt" not in r.headers["content-type"]:
+            return ""
 
         # Return the subtitle file as string
         return r.text
